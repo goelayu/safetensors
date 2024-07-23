@@ -332,6 +332,22 @@ pub extern "C" fn safetensors_free_tensor(ptr: *mut View) -> Status {
     }
 }
 
+/// Get the total size in bytes with handle to the underlying safetensors
+/// # Arguments
+/// * `handle`: Pointer to the underlying safetensors we want to know the total size of
+/// returns: usize Total size in bytes of the underlying safetensors
+
+#[no_mangle]
+pub unsafe extern "C" fn safetensors_total_size(handle: *const Handle) -> usize {
+    let mut total_size = 0;
+    for tensor_name in (*handle).safetensors.names() {
+        if let Ok(tensor) = (*handle).safetensors.tensor(&tensor_name) {
+            total_size += tensor.data().len();
+        }
+    }
+    total_size
+}
+
 /// Deserialize the content pointed by `buffer`, reading `buffer_len` number of bytes from it
 ///
 /// # Arguments
