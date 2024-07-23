@@ -12,6 +12,7 @@ pub enum Status {
     Utf8Error,
     Ok,
     InvalidHeader,
+    InvalidHeaderStart,
     InvalidHeaderDeserialization,
     HeaderTooLarge,
     HeaderTooSmall,
@@ -46,6 +47,7 @@ impl Into<Status> for CError {
             CError::Utf8Error(_) => Status::Utf8Error,
             CError::SafeTensorError(err) => match err {
                 SafeTensorError::InvalidHeader => Status::InvalidHeader,
+                SafeTensorError::InvalidHeaderStart => Status::InvalidHeaderStart,
                 SafeTensorError::InvalidHeaderDeserialization => {
                     Status::InvalidHeaderDeserialization
                 }
